@@ -11,6 +11,7 @@ import { CommonModule } from './common/common.module';
 import { UsersService } from './users/users.service';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { Hasher } from './libs/hasher';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { PrismaModule } from './prisma/prisma.module';
     PrismaModule,
   ],
   controllers: [AppController],
-  providers: [AppService, JwtAuthStrategy, UsersService, PrismaService],
+  providers: [AppService, JwtAuthStrategy, UsersService, PrismaService, Hasher],
 })
 export class AppModule {}

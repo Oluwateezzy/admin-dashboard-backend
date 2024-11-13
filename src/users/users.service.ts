@@ -11,14 +11,26 @@ import { FilterQueryDTO, PaginationQueryDTO } from './dto/filter-paginate.dto';
 import { isEmail } from 'class-validator';
 import { BaseResult, BaseResultWithData } from 'src/libs/results';
 import { UpdateUserDTO } from './dto/update.user.dto';
+import { Hasher } from 'src/libs/hasher';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hasher: Hasher,
+  ) {}
 
   findByCondition(cond: Prisma.UserWhereInput) {
     const user = this.prisma.user.findFirst({
       where: cond,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
     });
 
     if (!user) {
@@ -31,6 +43,14 @@ export class UsersService {
   findManyByCondition(cond: Prisma.UserWhereInput) {
     return this.prisma.user.findMany({
       where: cond,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -71,6 +91,14 @@ export class UsersService {
     const skipWithDefault = skip || 0;
     return this.prisma.user.findMany({
       where: userQuery,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
       orderBy: { createdAt: 'desc' },
       skip: skipWithDefault,
       take,
@@ -135,6 +163,7 @@ export class UsersService {
       email: data.email,
       username: data.username,
     });
+    data.password = await this.hasher.hash(data.password);
     await this.create(data);
     return new BaseResult(HttpStatus.CREATED, 'User Created');
   }
