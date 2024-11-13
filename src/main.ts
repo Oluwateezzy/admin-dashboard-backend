@@ -22,7 +22,11 @@ async function bootstrap() {
     },
   });
 
-  const allowedOrigins = ['*'];
+  const allowedOrigins = [
+    '*',
+    'https://admin-dashboard-backend-15xx.onrender.com',
+    'http://admin-dashboard-backend-15xx.onrender.com',
+  ];
 
   app.enableCors({
     origin: allowedOrigins,
