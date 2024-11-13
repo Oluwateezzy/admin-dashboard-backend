@@ -2,8 +2,7 @@ import { CHECK_POLICIES_KEY } from '../../decorator/check-policies.decorator';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IPolicyConfig } from './policy.interface';
-import { Role } from 'src/libs/enums/enum';
-import { User } from 'schemas/user.schema';
+import { Role, User } from '@prisma/client';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {

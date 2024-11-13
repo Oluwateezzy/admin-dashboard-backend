@@ -1,4 +1,4 @@
-import { Role } from 'src/libs/enums/enum';
+import { Role } from '@prisma/client';
 
 export interface IPolicyConfig {
   roles: Role[];
