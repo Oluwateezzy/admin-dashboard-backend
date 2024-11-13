@@ -1,6 +1,9 @@
-import { Types } from "mongoose";
+import { Role } from '@prisma/client';
+import { Types } from 'mongoose';
 
 export interface IJwtPayload {
-    email: string;
-    sub: string;
+  id: string;
+  email: string;
+  username: string;
+  role: Role;
 }
