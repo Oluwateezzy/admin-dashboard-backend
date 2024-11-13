@@ -22,16 +22,21 @@ async function bootstrap() {
     },
   });
 
-  const allowedOrigins = [
-    '*',
-    'http://localhost:8080/',
-    'https://localhost:8080/',
-  ];
+  const allowedOrigins = ['http://localhost:8080', 'https://localhost:8080'];
 
   app.enableCors({
-    origin: allowedOrigins,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
   });
+
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
