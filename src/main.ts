@@ -24,8 +24,8 @@ async function bootstrap() {
 
   const allowedOrigins = [
     '*',
-    'https://admin-dashboard-backend-15xx.onrender.com',
-    'http://admin-dashboard-backend-15xx.onrender.com',
+    'http://localhost:8080/',
+    'https://localhost:8080/',
   ];
 
   app.enableCors({
