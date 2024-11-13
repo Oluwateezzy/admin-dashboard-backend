@@ -13,6 +13,7 @@ import { BaseResult, BaseResultWithData } from 'src/libs/results';
 import { UserDTO } from 'src/users/dto/users.dto';
 import { Role, Status } from '@prisma/client';
 import { Hasher } from 'src/libs/hasher';
+import { userInfo } from 'os';
 
 @Injectable()
 export class AuthService {
@@ -30,19 +31,20 @@ export class AuthService {
       throw new NotFoundException('User Not Found');
     }
 
+    const { password, ...userInfo } = user;
+
     // compare user Password
-    const isMatched = await bcrypt.compare(data.password, user.password);
+    const isMatched = await bcrypt.compare(data.password, password);
 
     if (!isMatched) throw new BadRequestException('Invalid login credentials');
 
-    const [accessToken] = await this.userToken.getTokens(user);
+    const [accessToken] = await this.userToken.getTokens(userInfo);
     const { accessTokenEncrypt } = this.userToken.encryptTokens(accessToken);
 
-    return new BaseResultWithData(
-      HttpStatus.OK,
-      'User Logged In',
-      accessTokenEncrypt,
-    );
+    return new BaseResultWithData(HttpStatus.OK, 'User Logged In', {
+      userInfo,
+      token: accessTokenEncrypt,
+    });
   }
 
   async registerAdmin() {
