@@ -130,7 +130,7 @@ export class UsersService {
     });
   }
 
-  private async _throwIfEmailOrUsernameExists(data: {
+  async _throwIfEmailOrUsernameExists(data: {
     email: string;
     username: string;
   }) {
@@ -151,7 +151,7 @@ export class UsersService {
     }
   }
 
-  private _throwIfEmailIsInvalid(email?: string) {
+  _throwIfEmailIsInvalid(email?: string) {
     if (email && !isEmail(email)) {
       throw new BadRequestException('Please use a valid email');
     }

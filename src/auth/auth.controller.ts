@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { Public } from 'src/common/decorator/public.decorator';
 import { LoginDTO } from './dto/login.dto';
 
-@Controller('auth')
+@Controller('/api/auth')
 @ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -14,5 +14,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Login User', description: 'Login User' })
   login(@Body() data: LoginDTO) {
     return this.authService.login(data);
+  }
+
+  @Public()
+  @Post('/register/admin')
+  @ApiOperation({ summary: 'Register Admin', description: 'Register Admin' })
+  registerAdmin() {
+    return this.authService.registerAdmin();
   }
 }

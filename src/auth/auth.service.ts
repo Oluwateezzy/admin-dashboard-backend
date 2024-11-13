@@ -10,12 +10,17 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { GenerateToken } from './utils/getTokens';
 import { BaseResult, BaseResultWithData } from 'src/libs/results';
+import { UserDTO } from 'src/users/dto/users.dto';
+import { Role, Status } from '@prisma/client';
+import { Hasher } from 'src/libs/hasher';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private userToken: GenerateToken,
+    private readonly userToken: GenerateToken,
+    private readonly usersService: UsersService,
+    private readonly hasher: Hasher,
   ) {}
   async login(data: LoginDTO) {
     const user = await this.prisma.user.findUnique({
@@ -38,5 +43,23 @@ export class AuthService {
       'User Logged In',
       accessTokenEncrypt,
     );
+  }
+
+  async registerAdmin() {
+    const AdminInfo: UserDTO = {
+      email: 'admin@admin.com',
+      username: 'admin',
+      role: Role.ADMIN,
+      status: Status.ACTIVE,
+      password: '12345678',
+    };
+    await this.usersService._throwIfEmailIsInvalid(AdminInfo.email);
+    await this.usersService._throwIfEmailOrUsernameExists({
+      email: AdminInfo.email,
+      username: AdminInfo.username,
+    });
+    AdminInfo.password = await this.hasher.hash(AdminInfo.password);
+    const admin = await this.usersService.create(AdminInfo);
+    return new BaseResultWithData(HttpStatus.CREATED, 'Admin Created', admin);
   }
 }

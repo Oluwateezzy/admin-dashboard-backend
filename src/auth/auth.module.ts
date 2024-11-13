@@ -16,6 +16,7 @@ import { Encryptor } from 'src/libs/encryptor';
     PrismaService,
     GenerateToken,
     Encryptor,
+    Hasher,
   ],
 })
 export class AuthModule {}
