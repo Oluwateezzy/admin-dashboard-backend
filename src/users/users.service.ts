@@ -138,10 +138,12 @@ export class UsersService {
     await this.create(data);
     return new BaseResult(HttpStatus.CREATED, 'User Created');
   }
+
   async findManyUser(filter: FilterQueryDTO, paginate: PaginationQueryDTO) {
     const users = await this.findManyByConditionWithQuery(filter, paginate);
     return new BaseResultWithData(HttpStatus.OK, 'Find Many Users', users);
   }
+
   async findOneUser(id: string) {
     const user = await this.findByCondition({
       id,
@@ -149,10 +151,12 @@ export class UsersService {
 
     return new BaseResultWithData(HttpStatus.OK, 'Find One User', user);
   }
+
   async updateUser(id: string, data: UpdateUserDTO) {
     await this.update(id, data);
     return new BaseResult(HttpStatus.OK, 'User Updated');
   }
+
   async deleteUser(id: string) {
     await this.delete(id);
     return new BaseResult(HttpStatus.OK, 'User Deleted');
