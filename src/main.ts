@@ -23,11 +23,7 @@ async function bootstrap() {
   });
 
   const allowedOrigins = [
-    '*',
-    'http://localhost:8080/',
-    'https://localhost:8080/',
     'https://admin-dashboard-frontend-c4qn.onrender.com/',
-    'http://admin-dashboard-frontend-c4qn.onrender.com/',
   ];
 
   app.enableCors({
