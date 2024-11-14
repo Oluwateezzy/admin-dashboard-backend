@@ -33,6 +33,24 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      res.header(
+        'Access-Control-Allow-Origin',
+        'https://admin-dashboard-frontend-c4qn.onrender.com',
+      );
+      res.header(
+        'Access-Control-Allow-Methods',
+        'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      );
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.header('Access-Control-Allow-Credentials', 'true');
+      res.status(204).send();
+    } else {
+      next();
+    }
+  });
+
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
