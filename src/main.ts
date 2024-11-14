@@ -22,7 +22,13 @@ async function bootstrap() {
     },
   });
 
-  const allowedOrigins = ['http://localhost:8080', 'https://localhost:8080'];
+  const allowedOrigins = [
+    'http://localhost:8080',
+    'https://localhost:8080',
+    'http://localhost:3000/api',
+    'https://localhost:3000/api',
+    '*',
+  ];
 
   app.enableCors({
     origin: (origin, callback) => {

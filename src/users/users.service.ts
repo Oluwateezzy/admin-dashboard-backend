@@ -106,16 +106,35 @@ export class UsersService {
   }
 
   create(data: Prisma.UserUncheckedCreateInput) {
-    return this.prisma.user.create({ data });
+    return this.prisma.user.create({
+      data,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
+    });
   }
 
   async update(userId: string, data: Prisma.UserUncheckedUpdateInput) {
     await this.findByCondition({
       id: userId,
     });
+
     return this.prisma.user.update({
       where: { id: userId },
-      data,
+      data: data,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
     });
   }
 
@@ -164,8 +183,8 @@ export class UsersService {
       username: data.username,
     });
     data.password = await this.hasher.hash(data.password);
-    await this.create(data);
-    return new BaseResult(HttpStatus.CREATED, 'User Created');
+    const user = await this.create(data);
+    return new BaseResultWithData(HttpStatus.CREATED, 'User Created', user);
   }
 
   async findManyUser(filter: FilterQueryDTO, paginate: PaginationQueryDTO) {
@@ -182,8 +201,8 @@ export class UsersService {
   }
 
   async updateUser(id: string, data: UpdateUserDTO) {
-    await this.update(id, data);
-    return new BaseResult(HttpStatus.OK, 'User Updated');
+    const user = await this.update(id, data);
+    return new BaseResultWithData(HttpStatus.OK, 'User Updated', user);
   }
 
   async deleteUser(id: string) {
