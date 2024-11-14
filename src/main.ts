@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const config = new DocumentBuilder()
     .setTitle('Admin Dashboard Backend')
     .setDescription('Admin Dashboard Backend API description')
@@ -22,33 +23,13 @@ async function bootstrap() {
     },
   });
 
-  const allowedOrigins = [
-    'https://admin-dashboard-frontend-c4qn.onrender.com/',
-  ];
+  const allowedOrigins = ['https://admin-dashboard-frontend-c4qn.onrender.com'];
 
   app.enableCors({
     origin: allowedOrigins,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
-  });
-
-  app.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-      res.header(
-        'Access-Control-Allow-Origin',
-        'https://admin-dashboard-frontend-c4qn.onrender.com',
-      );
-      res.header(
-        'Access-Control-Allow-Methods',
-        'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      );
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-      res.header('Access-Control-Allow-Credentials', 'true');
-      res.status(204).send();
-    } else {
-      next();
-    }
   });
 
   await app.listen(process.env.PORT || 3000);
