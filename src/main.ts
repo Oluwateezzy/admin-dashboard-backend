@@ -23,24 +23,16 @@ async function bootstrap() {
   });
 
   const allowedOrigins = [
-    'http://localhost:8080',
-    'https://localhost:8080',
-    'http://localhost:3000/api',
-    'https://localhost:3000/api',
+    '*',
+    'http://localhost:8080/',
+    'https://localhost:8080/',
     'https://admin-dashboard-frontend-c4qn.onrender.com/',
     'http://admin-dashboard-frontend-c4qn.onrender.com/',
-    '*',
   ];
 
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: allowedOrigins,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   });
