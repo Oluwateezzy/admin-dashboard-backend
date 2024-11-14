@@ -1,73 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Admin Dashboard - User and Role Management Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is the backend for an admin dashboard that includes user management and role management with assigned permissions. It is built with **NestJS**, **Prisma ORM**, and **MongoDB**. The application provides APIs for user CRUD operations and role assignment with role-based access control (RBAC).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Overview](#overview)
+- [Installation](#installation)
+- [Core Features](#core-features)
+- [Technologies](#technologies)
+- [API Endpoints](#api-endpoints)
+- [Authorization](#authorization)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Overview
+
+This backend provides essential functionality for managing users and roles:
+
+- **User Management**: Admin can perform CRUD operations on users (add, view, update, delete).
+- **Role-Based Authorization**: Admin and User roles are restricted to different actions.
+- **MongoDB**: The user and role data are stored in MongoDB using Prisma ORM for easy data manipulation.
 
 ## Installation
 
-```bash
-$ npm install
-```
+To set up the project, follow these steps:
 
-## Running the app
+1. Clone the repository:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/Oluwateezzy/admin-dashboard-backend.git
+cd admin-dashboard-backend
 ```
 
-## Test
+2. Install dependencies:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Support
+3. Set up MongoDB and configure Prisma:
+   - Ensure you have a MongoDB instance running locally or use a cloud service.
+   - Update the `DATABASE_URL` in `.env` to point to your MongoDB connection string.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+4. Run Prisma migrations to set up your database:
 
-## Stay in touch
+```bash
+npx prisma db push
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+5. Start the development server:
 
-## License
+```bash
+npm run start:dev
+```
 
-Nest is [MIT licensed](LICENSE).
+The app will be available at `http://localhost:3000`.
+The Swagger will be available at `http://localhost:3000/api`.
+
+
+
+## Core Features
+
+### User Management
+- **Admin can**:
+  - Add new users with unique username and email.
+  - View a list of users with pagination.
+  - Update user details, including role and status.
+  - Delete users.
+
+- **User Fields**:
+  - `username` (unique)
+  - `email` (unique)
+  - `role` (Admin or User)
+  - `status` (Active, Inactive)
+
+### Role Management
+- **Admin can**:
+  - View a list of roles (Admin, User).
+  - Assign roles to users.
+
+- **Roles**:
+  - `Admin`: Can perform all CRUD operations.
+  - `User`: Can only view data (no modifications).
+
+### Authorization
+- Role-based access control (RBAC) using **NestJS Guards** to restrict access to API endpoints based on user roles.
+  - Admin users can access all endpoints for creating, updating, and deleting users.
+  - Users can only access the endpoint for viewing users.
+
+## Technologies
+
+- **NestJS**: A framework for building efficient and scalable Node.js applications.
+- **Prisma ORM**: A modern database toolkit for TypeScript and Node.js to interact with MongoDB.
+- **MongoDB**: NoSQL database for storing user and role data.
+- **JWT**: JSON Web Token for user authentication.
+- **Guards**: Role-based access control to secure endpoints in NestJS.
+
+## API Endpoints
+
+### User Management
+
+- **GET api/users**: Retrieve a list of users with pagination.
+- **POST api/users**: Add a new user.
+- **GET api/users/:id**: Get details of a specific user.
+- **PUT api/users/:id**: Update user details.
+- **DELETE api/users/:id**: Delete a user.
+
+## Authorization
+
+### Role-Based Access Control (RBAC)
+
+- **Admin** role can:
+  - Access all user management endpoints.
+  - Assign roles to users.
+  
+- **User** role can:
+  - Only access the `GET /users` endpoint to view users, but cannot modify any user data.
