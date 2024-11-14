@@ -14,7 +14,7 @@ import { Public } from 'src/common/decorator/public.decorator';
 import { UserDTO } from './dto/users.dto';
 import { FilterQueryDTO, PaginationQueryDTO } from './dto/filter-paginate.dto';
 import { UserParamsDTO } from './dto/params.users.dto';
-import { UpdateUserDTO } from './dto/update.user.dto';
+import { UpdateUserDTO, UpdateUserRoleDTO } from './dto/update.user.dto';
 import { CheckPolicies } from 'src/common/decorator/check-policies.decorator';
 import { Role } from '@prisma/client';
 
@@ -61,6 +61,18 @@ export class UsersController {
   @ApiOperation({ summary: 'Update User', description: 'Update User' })
   update(@Param() param: UserParamsDTO, @Body() data: UpdateUserDTO) {
     return this.usersService.updateUser(param.id, data);
+  }
+
+  @CheckPolicies({
+    roles: [Role.ADMIN],
+  })
+  @Patch('/role/:id')
+  @ApiOperation({
+    summary: 'Update User Role',
+    description: 'Update User Role',
+  })
+  updateRole(@Param() param: UserParamsDTO, @Body() data: UpdateUserRoleDTO) {
+    return this.usersService.updateUserRole(param.id, data.role);
   }
 
   @CheckPolicies({

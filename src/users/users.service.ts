@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDTO } from './dto/users.dto';
-import { Prisma, Status, User } from '@prisma/client';
+import { Prisma, Role, Status, User } from '@prisma/client';
 import { FilterQueryDTO, PaginationQueryDTO } from './dto/filter-paginate.dto';
 import { isEmail } from 'class-validator';
 import { BaseResult, BaseResultWithData } from 'src/libs/results';
@@ -203,6 +203,13 @@ export class UsersService {
   async updateUser(id: string, data: UpdateUserDTO) {
     const user = await this.update(id, data);
     return new BaseResultWithData(HttpStatus.OK, 'User Updated', user);
+  }
+
+  async updateUserRole(id: string, role: Role) {
+    const user = await this.update(id, {
+      role,
+    });
+    return new BaseResultWithData(HttpStatus.OK, 'User Role Updated', user);
   }
 
   async deleteUser(id: string) {

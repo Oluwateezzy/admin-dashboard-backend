@@ -27,6 +27,8 @@ async function bootstrap() {
     'https://localhost:8080',
     'http://localhost:3000/api',
     'https://localhost:3000/api',
+    'https://admin-dashboard-frontend-c4qn.onrender.com/',
+    'http://admin-dashboard-frontend-c4qn.onrender.com/',
     '*',
   ];
 
